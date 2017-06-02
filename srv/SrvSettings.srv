@@ -1,0 +1,5 @@
+uint16 numberOfScans
+uint16 speed
+uint16 holdUpTime
+float32 startPosition
+float32 endPosition

@@ -1,0 +1,21 @@
+<launch>
+
+<node pkg="tilt_scanner" name="tilt_scanner_node" type="tilt_scanner_node">
+output="screen">
+</node>
+
+<node pkg="tilt_scanner" name="transformation_node" type="transformation_node">
+output="screen">
+</node>
+
+<node pkg="sick_tim" name="sick_tim551_2050001" type="sick_tim551_2050001">
+output="screen">
+</node>
+
+<node pkg="rosserial_python" name="serial_node" type="serial_node.py">
+<param name="port" value="/dev/ttyACM0"/>
+<param name="baud" value="57600"/>
+output="screen">
+</node>
+
+</launch>
