@@ -31,21 +31,30 @@ private:
 
   void run(void);
 
+
+  // --CallBacks--
+
   void callBackAngle(const std_msgs::UInt16& angle);
 
+  void callBackHorizontal(const std_msgs::UInt16& horizontal);
+
   ros::NodeHandle _nh;
+
 
   // --Subscriber--
 
   ros::Subscriber _subCurAngle;
+  ros::Subscriber _subHorizontal;
 
 
   // --Publisher--
 
 
 
-  // --CallBack--
+	// --Members--
 
+  bool _horizontalAngleReceived;
+  std_msgs::UInt16 _horizontal;
   tf::Transform _transform;
   tf::TransformBroadcaster _br;
 
