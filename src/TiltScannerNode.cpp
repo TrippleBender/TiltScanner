@@ -142,30 +142,21 @@ void TiltScannerNode::run(void)
 
 bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, tilt_scanner::SrvSettings::Response& res)
 {
-  unsigned int numberOfScans = 0;
   unsigned int speed = 0;
-  unsigned int holdUpTime = 0;
   float startPosition = 0.00;                                         //unit is degree
   float endPosition = 0.00;
   float unit = 1/MotorIncrement;
 
   _cloud.points.clear();                                              //set PointCloud back
 
-  numberOfScans = req.numberOfScans;                                  //take over settings
-  speed = req.speed;
-  holdUpTime = req.holdUpTime;
+  speed = req.speed;																									//take over settings
   startPosition = req.startPosition;
   endPosition = req.endPosition;
 
-  if(numberOfScans == 0 || speed == 0 || speed > MaxSpeed  || startPosition < MinAngle || startPosition > MaxAngle ||
-     endPosition > MaxAngle || endPosition <= startPosition || (endPosition-startPosition)/(float)numberOfScans < MotorIncrement)            //check the input
+  if(speed == 0 || speed > MaxSpeed  || startPosition < MinAngle || startPosition > MaxAngle ||
+     endPosition > MaxAngle || endPosition <= startPosition)           																 //check the input
   {
     ROS_ERROR_STREAM("wrong settings");
-
-    if(numberOfScans == 0 || (endPosition-startPosition)/(float)numberOfScans < MotorIncrement)
-    {
-      ROS_INFO_STREAM("change the value 'numberOfScans'!");
-    }
 
     if(speed == 0 || speed > MaxSpeed)
     {
@@ -190,9 +181,7 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
     startPosition = startPosition * unit;                             //convert into the unit of the Dynamixel MX28-T and send them to the Arduino
     endPosition = endPosition * unit;
 
-    _settings.numberOfScans = numberOfScans;
     _settings.speed = speed;
-    _settings.holdUpTime = holdUpTime;
     _settings.startPosition = (uint16_t) round (startPosition);      //the casting is every time possible, because of the "if" startPosition can't be huger than 230
     _settings.endPosition = (uint16_t) round (endPosition);
 
@@ -200,10 +189,10 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
 
     ROS_INFO_STREAM("scan started");
 
-    std::cout << __PRETTY_FUNCTION__ << " scan data:\n\ number of scans: " << numberOfScans << "\n\ speed: " << speed
-          << "\n\ hold up time: " << holdUpTime <<"\n\ startPosition: " << startPosition
+    std::cout << __PRETTY_FUNCTION__
+    			<< " scan data:\n\ speed: " << speed
+          <<"\n\ startPosition: " << startPosition
           << "\n\ endPosition: " << endPosition <<std::endl;
-
     return true;
   }
 }
