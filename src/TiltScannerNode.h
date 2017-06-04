@@ -46,8 +46,6 @@ private:
 
 	void callBackState(const std_msgs::UInt16& state);
 
-	void callBackHorizontal(const std_msgs::UInt16& pitch);
-
 	bool callBackService(tilt_scanner::SrvSettings::Request& req, tilt_scanner::SrvSettings::Response& res);
 
 
@@ -71,18 +69,13 @@ private:
 
 	ros::Publisher _pubPointCloud;
 	ros::Publisher _pubSettings;
-	ros::Publisher _pubHorizontal;
-
 
 
 	// --Members--
 
-	bool _beforeStart;
   bool _scanReceived;
   bool _scanFinish;
   bool _scanStart;
-
-  std_msgs::UInt16 _horizontal;
 
   tf::Transform _transform;
   tf::TransformListener _listener;

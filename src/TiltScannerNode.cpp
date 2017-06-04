@@ -20,7 +20,6 @@
 
 TiltScannerNode::TiltScannerNode()
 {
-	_beforeStart = false;
   _scanReceived = false;
   _scanFinish = false;
   _scanStart = false;
@@ -36,7 +35,6 @@ TiltScannerNode::TiltScannerNode()
   // -- Publisher --
   _pubPointCloud = _nh.advertise<sensor_msgs::PointCloud>("subCloud", 1);
   _pubSettings = _nh.advertise<tilt_scanner::MsgSettings>("settings", 1);
-  _pubHorizontal = _nh.advertise<std_msgs::UInt16>("horizontal", 1);
 }
 
 
@@ -149,8 +147,6 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
   float endPosition = 0.00;
   float unit = 1/MotorIncrement;
 
-  _beforeStart = true;
-
   _cloud.points.clear();                                              //set PointCloud back
 
   speed = req.speed;																									//take over settings
@@ -221,14 +217,4 @@ void TiltScannerNode::callBackState(const std_msgs::UInt16& state)
   	{
   		_scanStart = true;
   	}
-}
-
-void TiltScannerNode::callBackHorizontal(const std_msgs::UInt16& pitch)
-{
-	if(_beforeStart)
-	{
-		_horizontal.data = pitch.data;
-		_pubHorizontal.publish(_horizontal);
-		_beforeStart = false;
-	}
 }

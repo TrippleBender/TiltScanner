@@ -16,15 +16,13 @@
 
 TransformationNode::TransformationNode()
 {
-	_horizontalAngleReceived = false;
+	_horizontalPosition = false;
+
+	// -- Service --
+	_srv = _nh.advertiseService("settingsSrv", &TransformationNode::callBackService, this);
 
   // --subscriber--
   _subCurAngle = _nh.subscribe("pitch", 1, &TransformationNode::callBackAngle, this);
-  _subHorizontal = _nh.subscribe("horizontal", 1, &TransformationNode::callBackHorizontal, this);
-
-
-  // --publisher--
-
 }
 
 TransformationNode::~TransformationNode()
@@ -50,9 +48,11 @@ void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
   float r = 0.103;                                                        //[m] length of the lever
   float motorAngle = 0.00;
 
-  if(_horizontalAngleReceived)																						//use the current horizontal angle of pitch, if received
+
+  if(_horizontalPosition)																									//use the current horizontal angle of pitch, if received
   {
-  	horizontal = _horizontal.data;
+  	horizontal = pitch.data;
+    _horizontalPosition = false;
   }
 
   if(pitch.data<MinAngle || pitch.data>MaxAngle)                         	//control the received angle
@@ -80,7 +80,9 @@ void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
   _br.sendTransform(tf::StampedTransform(_transform, ros::Time::now(), "motor", "laser"));     //broadcast transformation
 }
 
-void TransformationNode::callBackHorizontal(const std_msgs::UInt16& horizontal)								 //receive the current horizontal angle of pitch
+
+bool TransformationNode::callBackService(tilt_scanner::SrvSettings::Request& req, tilt_scanner::SrvSettings::Response& res)
 {
-	_horizontalAngleReceived = true;
+	_horizontalPosition = true;
+	return true;
 }
