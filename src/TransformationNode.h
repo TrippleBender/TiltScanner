@@ -52,12 +52,19 @@ private:
   ros::Subscriber _subCurAngle;
 
 
+  // --Publisher--
+
+  ros::Publisher _pubHorizontal;
+
+
 	// --Members--
 
   bool _horizontalPosition;
 
   tf::Transform _transform;
   tf::TransformBroadcaster _br;
+
+  std_msgs::UInt16 _pubhorizontal;
 };
 
 #endif /* SRC_TRANSFORMATIONNODE_H_ */

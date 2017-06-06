@@ -21,8 +21,11 @@ TransformationNode::TransformationNode()
 	// -- Service --
 	_srv = _nh.advertiseService("settingsSrv", &TransformationNode::callBackService, this);
 
-  // --subscriber--
+  // --Subscriber--
   _subCurAngle = _nh.subscribe("pitch", 1, &TransformationNode::callBackAngle, this);
+
+  // --Publisher--
+  _pubHorizontal = _nh.advertise<std_msgs::UInt16>("horizontal", 1);
 }
 
 TransformationNode::~TransformationNode()
@@ -53,6 +56,9 @@ void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
   {
   	horizontal = pitch.data;
     _horizontalPosition = false;
+
+    _pubhorizontal.data = horizontal;
+    _pubHorizontal.publish(_pubhorizontal);
   }
 
   if(pitch.data<MinAngle || pitch.data>MaxAngle)                         	//control the received angle
