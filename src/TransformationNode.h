@@ -11,7 +11,7 @@
 #include <ros/ros.h>
 #include <std_msgs/UInt16.h>
 #include <tf/transform_broadcaster.h>
-#include <tilt_scanner/SrvSettings.h>
+#include <tilt_scanner/MsgSettings.h>
 
 class TransformationNode
 {
@@ -37,19 +37,18 @@ private:
 
   void callBackAngle(const std_msgs::UInt16& angle);
 
-	bool callBackService(tilt_scanner::SrvSettings::Request& req, tilt_scanner::SrvSettings::Response& res);
+	void callBackSettings(const tilt_scanner::MsgSettings& settings);
 
   ros::NodeHandle _nh;
 
 
   // --Services--
 
-  ros::ServiceServer _srv;
-
 
   // --Subscriber--
 
   ros::Subscriber _subCurAngle;
+  ros::Subscriber _subSettings;
 
 
   // --Publisher--
@@ -64,7 +63,7 @@ private:
   tf::Transform _transform;
   tf::TransformBroadcaster _br;
 
-  std_msgs::UInt16 _pubhorizontal;
+  std_msgs::UInt16 _pubhorizontalAngle;
 };
 
 #endif /* SRC_TRANSFORMATIONNODE_H_ */
