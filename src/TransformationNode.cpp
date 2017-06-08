@@ -48,7 +48,7 @@ void TransformationNode::run(void)
 void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
 {
   const float unit = MotorIncrement*PI/180;                               //unit of the increments and the horizontal Position of the Dynamixel MX28-T
-  unsigned int horizontal = 0;
+  unsigned int horizontal = 2048;
   float r = 0.103;                                                        //[m] length of the lever
   float motorAngle = 0.00;
 
@@ -70,7 +70,7 @@ void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
   motorAngle = (int)(pitch.data-horizontal) * unit;
 
   tf::Transform translation;                                              //transformation with translation and rotation
-        translation.setOrigin( tf::Vector3(0.0, 0.0, -r) );
+        translation.setOrigin( tf::Vector3(0.0, 0.0, r) );
         tf::Quaternion q;
         q.setRPY(0, 0, 0);
         translation.setRotation(q);
@@ -78,7 +78,7 @@ void TransformationNode::callBackAngle (const std_msgs::UInt16& pitch)
 
   tf::Transform rotation;
         rotation.setOrigin( tf::Vector3(0.0, 0.0, 0.0) );
-        q.setRPY(0, motorAngle, 0);
+        q.setRPY(0, -motorAngle, 0);
         rotation.setRotation(q);
 
   _transform = rotation * translation;
