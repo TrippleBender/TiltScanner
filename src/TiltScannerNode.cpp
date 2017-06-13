@@ -90,7 +90,6 @@ void TiltScannerNode::run(void)
 
     if (_scanReceived && _scanStart)
     {
-    	ROS_INFO_STREAM("State = 3");
       beginTime = clock();
 
       if(!_listener.waitForTransform(                                               //wait for transformation
@@ -130,7 +129,6 @@ void TiltScannerNode::run(void)
     	  _pubPointCloud.publish(cloud);
     	  _scanFinish = false;
     	  _scanStart = false;
-    	  ROS_INFO_STREAM("Punktwolke veröffentlicht");
       }
       _scanReceived = false;
     }
@@ -148,7 +146,6 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
   float unit = 1/MotorIncrement;
 
   _cloud.points.clear();                                              //set PointCloud back
-  ROS_INFO_STREAM("Punktwolke zurückgesetzt");
 
   speed = req.speed;																									//take over settings
   startPosition = req.startPosition;
@@ -188,8 +185,6 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
 
     _pubSettings.publish(_settings);
 
-    ROS_INFO_STREAM("scan started");
-
     std::cout << __PRETTY_FUNCTION__ << "scan data:\n\\speed: " << speed << "\n\\startPosition: " << startPosition << "\n\endPosition: " << endPosition <<std::endl;
     return true;
   }
@@ -212,7 +207,7 @@ void TiltScannerNode::callBackState(const std_msgs::UInt16& state)
   }
 
   if(state.data == scanStart)
-  	{
-  		_scanStart = true;
-  	}
+  {
+  	_scanStart = true;
+  }
 }
