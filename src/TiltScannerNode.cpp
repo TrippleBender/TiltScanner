@@ -55,8 +55,6 @@ void TiltScannerNode::start(void)
 
 void TiltScannerNode::run(void)
 {
-  geometry_msgs::Point32 point;
-
   ros::Rate loop_Rate(15);                                                            //frequency 15Hz
   _cloud.header.frame_id = "laser";
   clock_t beginTime = clock();
@@ -182,7 +180,7 @@ bool TiltScannerNode::callBackService(tilt_scanner::SrvSettings::Request& req, t
     endPosition = endPosition * unit;
 
     _settings.speed = speed;
-    _settings.startPosition = (uint16_t) round (startPosition);      //the casting is every time possible, because of the "if" startPosition can't be huger than 230
+    _settings.startPosition = (uint16_t) round (startPosition);       //the casting is every time possible, because of the "if" startPosition can't be huger than 230
     _settings.endPosition = (uint16_t) round (endPosition);
 
     _pubSettings.publish(_settings);
