@@ -111,9 +111,10 @@ void TiltScannerNode::run(void)
       {
         _projector.transformLaserScanToPointCloud("motor", _scan, cloud, _listener);
         for(unsigned int i = 0; i < cloud.points.size(); i++)
-              {
-                _cloud.points.push_back(cloud.points.at(i));
-              }
+        {
+          _cloud.points.push_back(cloud.points.at(i));
+        }
+
         std::cout << cloud.header.frame_id << std::endl;
       }
 
