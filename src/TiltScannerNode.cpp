@@ -210,9 +210,13 @@ void TiltScannerNode::callBackState(const std_msgs::UInt16& state)
   {
     _scanFinish = true;
   }
+  else
+  {
+  	_scanFinish = false;
+  }
 
   if(state.data == scanStart)
-  	{
-  		_scanStart = true;
-  	}
+  {
+  	_scanStart = true;
+  }
 }
