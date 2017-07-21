@@ -14,7 +14,6 @@
 #include <std_msgs/UInt16.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud.h>
-#include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include <laser_geometry/laser_geometry.h>
 #include <tilt_scanner/MsgSettings.h>
@@ -77,9 +76,7 @@ private:
   bool _scanFinish;
   bool _scanStart;
 
-  tf::Transform _transform;
   tf::TransformListener _listener;
-  tf::TransformBroadcaster _br;
 
   laser_geometry::LaserProjection _projector;
 
